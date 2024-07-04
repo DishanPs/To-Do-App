@@ -21,10 +21,12 @@ const HomeScreen = () => {
   const [editTaskText, setEditTaskText] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
 
+  // Load tasks from AsyncStorage when component mounts
   useEffect(() => {
     loadTasks();
   }, []);
 
+  // Function to load tasks from AsyncStorage
   const loadTasks = async () => {
     try {
       const storedTasks = await AsyncStorage.getItem("tasks");
@@ -36,6 +38,7 @@ const HomeScreen = () => {
     }
   };
 
+  // Function to save tasks to AsyncStorage
   const saveTasks = async (tasks) => {
     try {
       await AsyncStorage.setItem("tasks", JSON.stringify(tasks));
@@ -44,6 +47,7 @@ const HomeScreen = () => {
     }
   };
 
+  // Function to add a new task
   const addTask = () => {
     if (taskText.trim()) {
       const newTasks = [
@@ -58,6 +62,7 @@ const HomeScreen = () => {
     }
   };
 
+  // Function to edit an existing task
   const editTask = (id, newText) => {
     const newTasks = tasks.map((task) =>
       task.id === id ? { ...task, text: newText } : task
@@ -66,6 +71,7 @@ const HomeScreen = () => {
     saveTasks(newTasks);
   };
 
+  // Function to delete a task
   const deleteTask = (id) => {
     Alert.alert(
       "Confirm Delete",
@@ -88,7 +94,8 @@ const HomeScreen = () => {
     );
   };
 
-  const toggleComplete = (id) => {
+  // Function to change the completion status of a task
+  const changeComplete = (id) => {
     const newTasks = tasks.map((task) =>
       task.id === id ? { ...task, completed: !task.completed } : task
     );
@@ -96,12 +103,14 @@ const HomeScreen = () => {
     saveTasks(newTasks);
   };
 
+  // Function to open the edit modal
   const openEditModal = (id, text) => {
     setEditTaskId(id);
     setEditTaskText(text);
     setModalVisible(true);
   };
 
+  // Function to handle the task editing process
   const handleEditTask = () => {
     editTask(editTaskId, editTaskText);
     setModalVisible(false);
@@ -126,7 +135,7 @@ const HomeScreen = () => {
             task={item}
             onEdit={() => openEditModal(item.id, item.text)}
             onDelete={() => deleteTask(item.id)}
-            onToggleComplete={() => toggleComplete(item.id)}
+            onComplete={() => changeComplete(item.id)}
           />
         )}
         keyExtractor={(item) => item.id}

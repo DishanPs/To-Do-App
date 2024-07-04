@@ -1,12 +1,12 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
-const TaskItem = ({ task, onEdit, onDelete, onToggleComplete }) => {
+const TaskItem = ({ task, onEdit, onDelete, onComplete }) => {
   return (
     <View style={[styles.taskContainer, task.completed && styles.completed]}>
       <Text style={styles.taskText}>{task.text}</Text>
       <View style={styles.actions}>
-        <TouchableOpacity onPress={onToggleComplete}>
+        <TouchableOpacity onPress={onComplete}>
           <Text>{task.completed ? "Undo" : "Complete"}</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={onEdit}>
