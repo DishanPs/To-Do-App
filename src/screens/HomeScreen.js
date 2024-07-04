@@ -128,18 +128,23 @@ const HomeScreen = () => {
         onChangeText={setTaskText}
       />
       <Button title="Add Task" onPress={addTask} />
-      <FlatList
-        data={tasks}
-        renderItem={({ item }) => (
-          <TaskItem
-            task={item}
-            onEdit={() => openEditModal(item.id, item.text)}
-            onDelete={() => deleteTask(item.id)}
-            onComplete={() => changeComplete(item.id)}
-          />
-        )}
-        keyExtractor={(item) => item.id}
-      />
+      {tasks.length === 0 ? (
+        <Text style={styles.noTasksText}>No tasks available.</Text>
+      ) : (
+        <FlatList
+          style={styles.flatlist}
+          data={tasks}
+          renderItem={({ item }) => (
+            <TaskItem
+              task={item}
+              onEdit={() => openEditModal(item.id, item.text)}
+              onDelete={() => deleteTask(item.id)}
+              onComplete={() => changeComplete(item.id)}
+            />
+          )}
+          keyExtractor={(item) => item.id}
+        />
+      )}
       <Modal
         visible={modalVisible}
         animationType="slide"
@@ -185,6 +190,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 10,
+  },
+  noTasksText: {
+    textAlign: "center",
+    fontSize: 16,
+    color: "#888",
+    marginTop: 10,
   },
   input: {
     borderWidth: 1,
@@ -232,6 +243,9 @@ const styles = StyleSheet.create({
   },
   modalButtonText: {
     color: "white",
+  },
+  flatlist: {
+    marginTop: 10,
   },
 });
 
